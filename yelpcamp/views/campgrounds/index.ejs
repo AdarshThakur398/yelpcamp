@@ -1,0 +1,46 @@
+
+ <% layout('layouts/boilerplate') %>
+ <head>
+   <style>
+     .card {
+       transition: transform 0.2s ease, box-shadow 0.2s ease;
+     }
+ 
+     .card:hover {
+       transform: scale(1.05);
+       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+     }
+ 
+     .img-fluid-custom {
+       max-height: 235px;
+       width: 100%; 
+       object-fit: cover; 
+     }
+   </style>
+ </head>
+ 
+ <body>
+   <div>
+     <form action="/campgrounds/new">
+       <button class="btn btn-warning shadow position-fixed bottom-0 end-0" style="z-index:1000;">NEW CAMPGROUND!</button>
+     </form>
+   </div>
+ 
+   <% for (let camp of campgrounds) { %>
+   <div class="card mb-3 shadow">
+     <div class="row no-gutters">
+       <div class="col-md-4">
+         <img class="img-fluid img-fluid-custom p-0.5" src="<%= camp.image %>" alt="<%= camp.title %>">
+       </div>
+       <div class="col-md-8">
+         <div class="card-body">
+           <h5 class="card-title"><%= camp.title %></h5>
+           <p class="card-text"><%= camp.description %></p>
+           <a class="btn btn-primary" href="/campgrounds/<%=camp._id%>"><%=camp.title%></a>
+         </div>
+       </div>
+     </div>
+   </div>
+   <% } %>
+ </body>
+ 
