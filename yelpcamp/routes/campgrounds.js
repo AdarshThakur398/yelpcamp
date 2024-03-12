@@ -70,6 +70,7 @@ router.get('/:id', catchAsync(async (req, res) => {
 
 router.get('/:id/edit',isLoggedIn, catchAsync(async (req, res) => {
     const camp = await Campground.findById(req.params.id);
+    const  redirectUrl = req.session.returnTo  || "/campgrounds";
     res.render('campgrounds/edit', { camp });
 }));
 
