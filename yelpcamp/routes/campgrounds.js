@@ -6,21 +6,16 @@ const Review = require('../models/review');
 
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/errorClass');
-const {isLoggedIn,isAuthor,validateReview,validateCampground} = require('../middleware')
+const {isLoggedIn,isAuthor,storeReturnTo,validateReview,validateCampground,isReviewAuthor} = require('../middleware')
 
-const storeReturnTo = (req, res, next) => {
-    if (req.session.returnTo) {
-        res.locals.returnTo = req.session.returnTo;
-    }
-    next();
-}
+
 router.delete('/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
 }));
 
-router.delete('/:id/reviews/:reviewId',isLoggedIn,isAuthor,catchAsync(async (req,res) => {
+router.delete('/:id/reviews/:reviewId',isLoggedIn,isReviewAuthor,catchAsync(async (req,res) => {
     const {id,reviewId} = req.params;   
     await Campground.findByIdAndUpdate(id,{ $pull: {reviews:reviewId}});
     await Review.findByIdAndDelete(reviewId);
@@ -39,14 +34,16 @@ router.get('/' , catchAsync(async (req, res) => {
     }
 }));
  
-router.post('/:id/reviews', validateReview, catchAsync(async (req, res) => {
+router.post('/:id/reviews', isLoggedIn, validateReview, catchAsync(async (req, res) => {
     const camp = await Campground.findById(req.params.id);
     const newReview = new Review(req.body.review);
+    newReview.author = req.user._id; 
     camp.reviews.push(newReview);
     await camp.save();
     await newReview.save();
     res.redirect(`/campgrounds/${camp._id}`);
 }));
+
 
 
 router.get('/new',isLoggedIn  ,(req, res) => {
@@ -55,7 +52,12 @@ router.get('/new',isLoggedIn  ,(req, res) => {
 });
 
 router.get('/:id', catchAsync(async (req, res) => {
-    const camp = await Campground.findById(req.params.id).populate('reviews').populate('author');
+    const camp = await Campground.findById(req.params.id).populate({
+        path:'reviews',
+        populate: {
+            path:'author'
+        }}).populate('author');
+    console.log(camp);
     if (!camp) {
         req.flash('error',"Campground not available!");
         return res.redirect('/campgrounds');
@@ -94,4 +96,3 @@ router.put('/:id', isLoggedIn,isAuthor,catchAsync(async (req, res) => {
 }));
 
 module.exports = router;
-

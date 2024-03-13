@@ -50,6 +50,7 @@
         .review-section button:hover {
             background-color: #218838;
         }
+
     </style>
 </head>
 
@@ -79,7 +80,7 @@
                         <%= random %> days ago
                     </div>
                 </div>
-
+            <% if (currentUser) { %>
                 <div class="review-section">
                     <form action="/campgrounds/<%= camp._id %>/reviews" method="POST" class="needs-validation"
                         novalidate>
@@ -101,6 +102,7 @@
                     </form>
                 </div>
             </div>
+            <% } %>
 
             <div class="col-md-6 col-lg-6">
             
@@ -108,16 +110,22 @@
                     <h4><b>Previous Reviews:</b></h4>
 
                     <% for (let review of camp.reviews) { %>
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <p>Rating: <%= review.rating %></p>
-                            <p>Review: <%= review.body %></p>
-                            <form action="/campgrounds/<%=camp._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
-                                <button class="btn btn-danger">Delete</button>
-                            </form>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <p>Rating: <%= review.rating %></p>
+                                <% if (review.author) { %>
+                                    <h6 class="card-subtitle mb-2 text-muted"><%= review.author.username %></h6>
+                                <% } %>
+                                <p>Review: <%= review.body %></p>
+                                <% if (currentUser && review.author && review.author.equals(currentUser._id)) { %>
+                                    <form action="/campgrounds/<%=camp._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+                                        <button class="btn btn-danger">Delete</button>
+                                    </form>
+                                <% } %>
+                            </div>
                         </div>
-                    </div>
                     <% } %>
+                    
                 </div>
             </div>
         </div>
