@@ -9,7 +9,7 @@ const validateReview = (req, res, next) => {
     const { error } = reviewSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
-        return res.status(400).send(msg); // Send an error response to the client
+        return res.status(400).send(msg); 
     }
     next();
 };

@@ -6,30 +6,21 @@ const Review = require('../models/review');
 
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/errorClass');
-const {isLoggedIn} = require('../middleware')
-const validateCampground = (req, res, next) => {
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        return res.status(400).send(msg); 
+const {isLoggedIn,isAuthor,validateReview,validateCampground} = require('../middleware')
+
+const storeReturnTo = (req, res, next) => {
+    if (req.session.returnTo) {
+        res.locals.returnTo = req.session.returnTo;
     }
     next();
-};
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        return res.status(400).send(msg); 
-    }
-    next();
-};
+}
 router.delete('/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
 }));
 
-router.delete('/:id/reviews/:reviewId',catchAsync(async (req,res) => {
+router.delete('/:id/reviews/:reviewId',isLoggedIn,isAuthor,catchAsync(async (req,res) => {
     const {id,reviewId} = req.params;   
     await Campground.findByIdAndUpdate(id,{ $pull: {reviews:reviewId}});
     await Review.findByIdAndDelete(reviewId);
@@ -42,7 +33,7 @@ router.get('/' , catchAsync(async (req, res) => {
     const campgrounds = await Campground.find({}); 
     res.render('campgrounds/index', { campgrounds });
     if (req.isAuthenticated()) {
-        // User is authenticated, access user ID from req.user._id
+     
         const userId = req.user._id;
         console.log('User ID: ' + userId);
     }
@@ -73,18 +64,14 @@ router.get('/:id', catchAsync(async (req, res) => {
     res.render('campgrounds/show', { camp, random });
 }));
 
-router.get('/:id/edit',isLoggedIn, catchAsync(async (req, res) => {
+router.get('/:id/edit',isLoggedIn,isAuthor, catchAsync(async (req, res) => {
    const {id} = req.params;
     const camp = await Campground.findById(id);
     if (!camp) {
         req.flash('error',"NO SUCH CAMPGROUND EXIST!!")
         return res.redirect('/campgrounds')
     }
-    if (!camp.author.equals(req.user._id)) {
-           
-        req.flash('error','You do not have permission to do that!')
-        return res.redirect(`/campgrounds/${id}`);
-    }
+  
     res.render('campgrounds/edit', { camp });
 }));
 
@@ -98,17 +85,13 @@ router.post('/',isLoggedIn, validateCampground, catchAsync(async (req, res) => {
     res.redirect(`/campgrounds/${camp.id}`);
 }));
 
-router.put('/:id', isLoggedIn,catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn,isAuthor,catchAsync(async (req, res) => {
     const { id } = req.params;
-    const camp = await Campground.findById(id);
-    if (!camp.author.equals(req.user._id)) {
-           
-        req.flash('error','You do not have permission to do that!')
-        return res.redirect(`/campgrounds/${id}`);
-    }
-    const campground = await Campground.findByIdAndUpdate(id, { ...req.body });
+   
+    const camp = await Campground.findByIdAndUpdate(id, { ...req.body });
     req.flash('success',"successfuly updated!")
     res.redirect(`/campgrounds/${camp._id}`);
 }));
+
 module.exports = router;
 

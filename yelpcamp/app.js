@@ -64,9 +64,9 @@ db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
     console.log('database connected');
 });
-app.use('/', userRoutes)
-app.use('/campgrounds',CampgroundRoutes)
-app.use('/campgrounds/:id/reviews/',ReviewRoutes)
+app.use("/", userRoutes)
+app.use("/campgrounds",CampgroundRoutes)
+app.use("/campgrounds/:id/reviews/",ReviewRoutes)
 
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
