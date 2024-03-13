@@ -41,6 +41,11 @@ router.delete('/:id/reviews/:reviewId',catchAsync(async (req,res) => {
 router.get('/' , catchAsync(async (req, res) => {
     const campgrounds = await Campground.find({}); 
     res.render('campgrounds/index', { campgrounds });
+    if (req.isAuthenticated()) {
+        // User is authenticated, access user ID from req.user._id
+        const userId = req.user._id;
+        console.log('User ID: ' + userId);
+    }
 }));
  
 router.post('/:id/reviews', validateReview, catchAsync(async (req, res) => {
@@ -59,7 +64,7 @@ router.get('/new',isLoggedIn  ,(req, res) => {
 });
 
 router.get('/:id', catchAsync(async (req, res) => {
-    const camp = await Campground.findById(req.params.id).populate('reviews');
+    const camp = await Campground.findById(req.params.id).populate('reviews').populate('author');
     if (!camp) {
         req.flash('error',"Campground not available!");
         return res.redirect('/campgrounds');
@@ -70,13 +75,15 @@ router.get('/:id', catchAsync(async (req, res) => {
 
 router.get('/:id/edit',isLoggedIn, catchAsync(async (req, res) => {
     const camp = await Campground.findById(req.params.id);
-    const  redirectUrl = req.session.returnTo  || "/campgrounds";
+ 
     res.render('campgrounds/edit', { camp });
 }));
 
 router.post('/',isLoggedIn, validateCampground, catchAsync(async (req, res) => {
     const camp = new Campground(req.body);
+    camp.author = req.user._id;
     await camp.save();
+   
     req.flash('success',"Successfully made a new campground!!")
     res.redirect(`/campgrounds/${camp.id}`);
 }));

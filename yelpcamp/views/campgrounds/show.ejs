@@ -57,7 +57,7 @@
     <div class="container mt-0 mb-5">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-6">
-                <!-- Left side content (Campground Information and Add a New Review) -->
+               
                 <div class="card mb-3 shadow">
                     <img src="<%= camp.image %>" class="card-img-top p-2 rounded-top" height="235" alt="Camp Image">
                     <div class="card-body">
@@ -67,6 +67,7 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item text-muted"><%= camp.location %></li>
                         <li class="list-group-item">$<%= camp.price %>/night</li>
+                        <li class="list-group-item">Submitted by <%= camp.author.username %></li>
                     </ul>
                     <div class="card-body">
                         <a href="/campgrounds/<%= camp._id %>/edit" class="card-link btn btn-success">EDIT</a>
