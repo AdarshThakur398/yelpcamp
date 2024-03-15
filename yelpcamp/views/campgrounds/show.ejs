@@ -125,7 +125,8 @@
                             </div>
                         </div>
                     <% } %>
-                    
+                    <% if (!currentUser) { %>
+                        <h6>Login to add reviews</h6> <% } %>
                 </div>
             </div>
         </div>

@@ -66,7 +66,7 @@ db.once("open", () => {
 });
 app.use("/", userRoutes)
 app.use("/campgrounds",CampgroundRoutes)
-app.use("/campgrounds/:id/reviews",ReviewRoutes)
+app.use("/campgrounds/:id/reviews/",ReviewRoutes)
 
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
