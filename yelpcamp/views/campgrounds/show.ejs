@@ -11,7 +11,7 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
         crossorigin="anonymous">
     <style>
-        /* Add this style block for a more attractive card hover effect */
+       
         .card {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
@@ -21,7 +21,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust the box shadow as needed */
         }
 
-        /* Style for the Leave a review section */
+ 
         .review-section {
             background-color: #f8f9fa;
             padding: 20px;
@@ -52,6 +52,7 @@
         }
 
     </style>
+    <link rel="stylesheet" href="/stylesheet/star.css">
 </head>
 
 <body>
@@ -112,7 +113,12 @@
                     <% for (let review of camp.reviews) { %>
                         <div class="card mb-3">
                             <div class="card-body">
+                         
+                                <p class="starability-result" data-rating="<%=review.rating%>">
+                                  Rated: <%= review.rating%> stars
+                                </p>
                                 <p>Rating: <%= review.rating %></p>
+
                                 <% if (review.author) { %>
                                     <h6 class="card-subtitle mb-2 text-muted"><%= review.author.username %></h6>
                                 <% } %>
