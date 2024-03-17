@@ -47,7 +47,7 @@
 <body>
     <div class="mb-1 mt-2 text-center"><h1 class="form-label"><b>NEW CAMPGROUND</b></h1></div>
     <div class="text-center container mt-5">
-        <form action="/campgrounds" id="form" class="needs-validation" novalidate method="POST">
+        <form action="/campgrounds" id="form" class="needs-validation" novalidate method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="title" class="form-label"><b>TITLE</b></label>
                 <input type="text" class="form-control" name="title" required>
@@ -59,14 +59,13 @@
                 <input type="text" name="location" class="form-control" required>
                 <div class="valid-feedback">Looks good!</div>
             </div>
-            
+            <input type="file">
             <div class="mb-3">
                 <label for="image" class="form-label"><b>IMAGE URL</b></label>
                 <input type="text" name="image" class="form-control" required>
                
             </div>
-            
-          <!-- Update the ID of the price input -->
+         
      <div class="mb-3">
       <label for="price" class="form-label" ><b>PRICE</b></label>
     <div class="input-group mb-3">
@@ -91,11 +90,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
+       
         (function() {
           'use strict';
           window.addEventListener('load', function() {
-            var form = document.getElementById('form'); // Select the form by its ID
+            var form = document.getElementById('form');
             form.addEventListener('submit', function(event) {
               if (form.checkValidity() === false) {
                 event.preventDefault();

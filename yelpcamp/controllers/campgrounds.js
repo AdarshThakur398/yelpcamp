@@ -23,6 +23,7 @@ module.exports.newCampGround = async (req, res) => {
     
     req.flash('success',"Successfully made a new campground!!")
     res.redirect(`/campgrounds/${camp.id}`);
+    console.log(req.body)
 }
 
 module.exports.renderEditForm = async (req, res) => {
