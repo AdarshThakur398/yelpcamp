@@ -1,12 +1,28 @@
+const express = require('express');
+const router=express.Router();
 
+const { campgroundSchema, reviewSchema } = require('../Schemas.js');
+const Review = require('../models/review');
+const campground = require('../controllers/campgrounds');
+const catchAsync = require('../utils/catchAsync');
+const ExpressError = require('../utils/errorClass');
+const {isLoggedIn,isAuthor,storeReturnTo,validateReview,validateCampground,isReviewAuthor} = require('../middleware')
+const {storage} = require('../cloudinary')
+const multer  = require('multer')
+const upload = multer({storage})
+
+
+
+
+    
 const Campground = require('../models/campground');
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({}); 
-    res.render('campgrounds/index', { campgrounds });
+    res.render('campgrounds/index', { campgrounds }); 
     if (req.isAuthenticated()) {
      
         const userId = req.user._id;
-        console.log('User ID: ' + userId);
+      
     }
 }
 
@@ -20,10 +36,11 @@ module.exports.newCampGround = async (req, res) => {
     
     camp.author = req.user._id;
     await camp.save();
-    
+    console.log(req.body);
     req.flash('success',"Successfully made a new campground!!")
-    res.redirect(`/campgrounds/${camp.id}`);
-    console.log(req.body)
+    res.redirect(`/campgrounds/${camp.id}`); 
+
+ 
 }
 
 module.exports.renderEditForm = async (req, res) => {
