@@ -7,16 +7,10 @@ const campground = require('../controllers/campgrounds');
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/errorClass');
 const {isLoggedIn,isAuthor,storeReturnTo,validateReview,validateCampground,isReviewAuthor} = require('../middleware')
-
 const {storage} = require('../cloudinary')
 const multer  = require('multer')
+const upload = multer({ storage: storage, limits: { fieldSize: 10 * 1024 * 1024 } });
 
-const upload = multer({ storage: storage});
-router.use(express.json());
-router.use(express.urlencoded({
- extended: true,
- })
-);
 uploadErrorHandler = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {
       console.error('Multer error:', err);
@@ -33,13 +27,11 @@ router.delete('/:id', catchAsync(campground.deleteCampground));
 router.route('/') 
   .get(catchAsync(campground.index))
   //.post(upload.array('image'),isLoggedIn, validateCampground, catchAsync(campground.newCampGround));
-  .post(upload.array("file"),(req,res) => {
+  .post(upload.array("file",{name:"file"}),(req,res) => {
   
   res.send('we cookin!!')
-  const obj = JSON.parse(JSON.stringify(req.body)); // req.body = [Object: null prototype] { title: 'product' }
-
-  console.log(obj); 
-  console.log(req.files)// { title: 'product' }
+  console.log(req.body);
+  console.log(req.file);
 
 })
        
