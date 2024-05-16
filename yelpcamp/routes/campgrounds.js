@@ -26,15 +26,10 @@ router.delete('/:id', catchAsync(campground.deleteCampground));
 
 router.route('/') 
   .get(catchAsync(campground.index))
-  //.post(upload.array('image'),isLoggedIn, validateCampground, catchAsync(campground.newCampGround));
-  .post(upload.array("file",{name:"file"}),(req,res) => {
+  .post(upload.array('file'),isLoggedIn, validateCampground, catchAsync(campground.newCampGround));
+ // .post(upload.array("file",{name:"file"}),(req,res) => {
   
-  res.send('we cookin!!')
-  console.log(req.body);
-  console.log(req.file);
 
-})
-       
 router.get('/new',isLoggedIn  ,campground.newFormRender);
 router.route('/:id')
    .get( catchAsync(campground.showCampground))

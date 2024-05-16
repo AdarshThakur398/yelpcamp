@@ -32,17 +32,9 @@ router.delete('/:id', catchAsync(campground.deleteCampground));
 
 router.route('/') 
   .get(catchAsync(campground.index))
-  //.post(upload.array('image'),isLoggedIn, validateCampground, catchAsync(campground.newCampGround));
-  .post(upload.array("file"),(req,res) => {
+  .post(isLoggedIn,upload.array('file'), validateCampground, catchAsync(campground.newCampGround));     
   
-  res.send('we cookin!!')
-  const obj = JSON.parse(JSON.stringify(req.body)); // req.body = [Object: null prototype] { title: 'product' }
-
-  console.log(obj); 
-  console.log(req.files)// { title: 'product' }
-
-})
-       
+  
 router.get('/new',isLoggedIn  ,campground.newFormRender);
 router.route('/:id')
    .get( catchAsync(campground.showCampground))
