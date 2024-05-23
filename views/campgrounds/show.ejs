@@ -3,6 +3,8 @@
 
 <% layout('layouts/boilerplate') %>
 
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +12,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
         crossorigin="anonymous">
+        
+        
+
         <style>
             .card {
                 transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -81,11 +86,14 @@
 </head>
 
 <body>
+   
     <div class="main__container">
         <div class="container__1">
     <div class="container mt-0 mb-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-6">
+        <div class="row justify-content-center">   <div class="col-md-6 col-lg-6">
+            <div id='map' style='width: 400px; height: 300px;'></div>
+
+         
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         <% camp.images.forEach((img,i) => { %>
@@ -204,10 +212,11 @@
     <form action="/campgrounds" method="GET">
         <button class="position-fixed bottom-0 end-0 btn btn-dark">ALL CAMPGROUNDS</button>
     </form>
-
+     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script>
+       
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function () {
             'use strict';
@@ -224,7 +233,24 @@
                 });
             }, false);
         })();
-    </script>
+    </script><script>
+        const campground= <%-JSON.stringify(camp)%>;
+    </script>  
+    <script>
+      
+mapboxgl.accessToken = '<%-process.env.MAPBOX_TOKEN %>';
+
+const map = new mapboxgl.Map({
+	container: 'map', 
+	style: 'mapbox://styles/mapbox/streets-v12', 
+	center: campground.geometry.coordinates, 
+	zoom: 8,
+});
+ new mapboxgl.Marker()
+ .setLngLat(campground.geometry.coordinates)
+ .addTo(map)
+</script>
+  
 </body>
 
 </html>
