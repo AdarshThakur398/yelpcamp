@@ -21,7 +21,6 @@ uploadErrorHandler = (err, req, res, next) => {
   }
 };
 
-router.delete('/:id', catchAsync(campground.deleteCampground));
 
 
 router.route('/') 
@@ -34,7 +33,8 @@ router.get('/new',isLoggedIn  ,campground.newFormRender);
 router.route('/:id')
    .get( catchAsync(campground.showCampground))
 
-   .put(isLoggedIn,isAuthor,catchAsync(campground.updateCampground));
+   .put(isLoggedIn,isAuthor,catchAsync(campground.updateCampground))
+   .delete(isLoggedIn,isAuthor,catchAsync(campground.deleteCampground));
 
 router.get('/:id/edit',isLoggedIn,isAuthor, catchAsync(campground.renderEditForm));
 

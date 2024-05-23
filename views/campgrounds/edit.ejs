@@ -33,7 +33,7 @@
 
 <body>
     <div class="container text-center shadow col-md-8 col-lg-8">
-        <form action="/campgrounds/<%=camp._id%>?_method=PUT" class="needs-validation" novalidate method="POST">
+        <form action="/campgrounds/<%=camp._id%>?_method=PUT" class="needs-validation" novalidate method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" name="title" value="<%= camp.title%>" class="form-control" id="title" required>
@@ -41,6 +41,12 @@
             <div class="form-group">
                 <label for="location">Location</label>
                 <input type="text" name="location" value="<%= camp.location%>" class="form-control" id="location" required>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    ADD IMAGES
+                    <input  id="images" type="file" name="file" multiple>
+                </div>
             </div>
             <div class="form-group">
                 <label for="price">Price</label>
