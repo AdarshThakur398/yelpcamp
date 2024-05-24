@@ -34,9 +34,9 @@
      <div class="row no-gutters">
        <div class="col-md-4">
         <% if (camp.images.length) { %>
-         <img class="img-fluid img-fluid-custom p-0.5" src="<%= camp.images[0].url %>" alt="<%= camp.title %>">
+         <img crossorigin="anonymous" class="img-fluid img-fluid-custom p-0.5" src="<%= camp.images[0].url %>" alt="<%= camp.title %>">
          <% } else { %>
-          <img class="img-fluid img-fluid-custom p-0.5" src="" alt="<%= camp.title %>">
+          <img crossorigin="anonymous" class="img-fluid img-fluid-custom p-0.5" src="" alt="<%= camp.title %>">
           <% } %>
        </div>
        <div class="col-md-8">

@@ -3,7 +3,6 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 console.log(process.env.SECRET)
-
 const express = require('express');
 const app = express();
 const ejsMate = require('ejs-mate');
@@ -18,12 +17,14 @@ const passport=require('passport')
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 const userRoutes = require('./routes/users')
+const helmet=require('helmet')
 if (!campgroundSchema || !reviewSchema) {
     console.error("Schema objects are not properly initialized or imported.");
  
 } else {
    
 }
+const mongoSanitize = require('express-mongo-sanitize');
 
 const ReviewRoutes = require('./routes/reviews');
 const CampgroundRoutes= require('./routes/campgrounds');
@@ -33,8 +34,10 @@ const ExpressError = require('./utils/errorClass');
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
-
+app.use(mongoSanitize());
+app.use(helmet({contentSecurityPolicy:false}));
 const sessionConfig = {
+    name:"session",
     secret:"thisisasecretboi",
     resave:false,
     saveUninitialized:true,
