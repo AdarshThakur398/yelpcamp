@@ -1,11 +1,12 @@
 mapboxgl.accessToken = mapToken;
 const map = new mapboxgl.Map({
-    container: 'map',
+    container: 'cluster-map',
     
     style: 'mapbox://styles/mapbox/light-v11',
     center: [-103.5917, 40.6699],
     zoom: 3
 });
+
 
 map.on('load', () => {
     
@@ -91,10 +92,8 @@ map.on('load', () => {
         
     });
 
-    // When a click event occurs on a feature in
-    // the unclustered-point layer, open a popup at
-    // the location of the feature, with
-    // description HTML from its properties.
+    map.addControl(new mapboxgl.NavigationControl());
+   
     map.on('click', 'unclustered-point', (e) => {
         const {popUpMarkup} = e.features[0].properties;
         const coordinates = e.features[0].geometry.coordinates.slice();

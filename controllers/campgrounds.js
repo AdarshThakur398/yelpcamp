@@ -82,7 +82,7 @@ module.exports.renderEditForm = async (req, res) => {
 }
 
 module.exports.updateCampground = async (req, res) => {
-    console.log(req.body)
+    console.log(req.files)
     const { id } = req.params;
     const camp = await Campground.findByIdAndUpdate(id, { ...req.body });
     const imgs = req.files.map( f => ({url:f.path,filename:f.filename}));
@@ -100,8 +100,10 @@ module.exports.updateCampground = async (req, res) => {
 }
 
 module.exports.deleteCampground = async (req, res) => {
+    console.log(req.body);
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
+    req.flash('success',"successfully deleted!")
     res.redirect('/campgrounds');
 }
 

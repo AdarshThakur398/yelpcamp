@@ -7,16 +7,10 @@ const campground = require('../controllers/campgrounds');
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/errorClass');
 const {isLoggedIn,isAuthor,storeReturnTo,validateReview,validateCampground,isReviewAuthor} = require('../middleware')
-
 const {storage} = require('../cloudinary')
 const multer  = require('multer')
-
 const upload = multer({ storage: storage});
-router.use(express.json());
-router.use(express.urlencoded({
- extended: true,
- })
-);
+
 uploadErrorHandler = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {
       console.error('Multer error:', err);
@@ -31,17 +25,16 @@ uploadErrorHandler = (err, req, res, next) => {
 
 router.route('/') 
   .get(catchAsync(campground.index))
-  .post(isLoggedIn,upload.array('file'), validateCampground, catchAsync(campground.newCampGround));     
-  
-  
+  .post(upload.array('file'),isLoggedIn, validateCampground, catchAsync(campground.newCampGround));
+ 
+
 router.get('/new',isLoggedIn  ,campground.newFormRender);
 router.route('/:id')
+   .delete(isLoggedIn,isAuthor,catchAsync(campground.deleteCampground))
    .get( catchAsync(campground.showCampground))
 
-   .put(isLoggedIn,isAuthor,upload.array('file'),catchAsync(campground.updateCampground))
-   .delete(catchAsync(campground.deleteCampground));
-
-
+   .put(upload.array('file'),isLoggedIn,isAuthor,catchAsync(campground.updateCampground))
+  
 router.get('/:id/edit',isLoggedIn,isAuthor, catchAsync(campground.renderEditForm));
 
 module.exports = router;

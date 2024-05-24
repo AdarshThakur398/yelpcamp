@@ -45,8 +45,8 @@
 </head>
 <% layout('layouts/boilerplate') %>
 <body>
-    <div class="mb-1 mt-2 text-center"><h1 class="form-label"><b>NEW CAMPGROUND</b></h1></div>
-    <div class="text-center container mt-5">
+    <div class="mb-1 mt-0 text-center"><h1 class="form-label"><b>NEW CAMPGROUND</b></h1></div>
+    <div class="text-center container mt-3">
         <form action="/campgrounds" id="form"  method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="title" class="form-label"><b>TITLE</b></label>
@@ -59,9 +59,7 @@
                 <input type="text" name="location" class="form-control" required>
                 <div class="valid-feedback">Looks good!</div>
             </div>
-            <div class="mb-3">
-           
-            <input type="file" name="file"  id="file" multiple >Upload IMage</div>
+         
             
          
      <div class="mb-3">
@@ -71,6 +69,10 @@
         <input type="text" class="form-control" id="price-input"  name="price" aria-label="Amount (to the nearest dollar)" placeholder="0.00" required>
         <span class="input-group-text"></span>
     </div>
+</div>
+<div class="mb-3">
+    <label for="images" class="form-label"><b>Choose Images</b></label>
+    <input type="file" class="form-control" id="images" name="file" multiple accept="image/*">
 </div>
 
             

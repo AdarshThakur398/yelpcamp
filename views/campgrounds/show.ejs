@@ -58,12 +58,21 @@
                 width: auto;
                 display: flex;
                 flex-direction: row;
-                justify-content: space-between;
+                align-items:center ;
+                justify-content: center;
+                
             }
     
             .container__1 {
                 flex: 1;
                 width:70%;
+            }
+            .imp__btns {
+                display:flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                gap:13px;
+
             }
     
             .previous_reviews {
@@ -91,8 +100,8 @@
         <div class="container__1">
     <div class="container mt-0 mb-5">
         <div class="row justify-content-center">   <div class="col-md-6 col-lg-6">
-            <div id='map' style='width: 400px; height: 300px;'></div>
-
+          
+            <div id='map'></div>
          
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
@@ -131,10 +140,10 @@
                     </ul>
                     <% if(currentUser && camp.author.equals(currentUser._id)) { %>
                     <div class="card-body">
+                        <div class="imp__btns">
                         <a href="/campgrounds/<%= camp._id %>/edit" class="card-link btn btn-success">EDIT</a>
-                        <a href="/campgrounds/<%= camp._id %>?_method=DELETE" method="POST"
-                            class="card-link btn btn-danger">DELETE</a>
-                    </div> <% } %>
+                        <form action="/campgrounds/<%=camp._id%>?_method=DELETE" method="POST"><button  class="card-link btn btn-danger">DELETE</button></form>
+                    </div></div> <% } %>
                     <div class="card-footer text-muted">
                         <%= random %> days ago
                     </div>
@@ -217,7 +226,7 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script>
        
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
+       
         (function () {
             'use strict';
             window.addEventListener('load', function () {
@@ -246,6 +255,7 @@ const map = new mapboxgl.Map({
 	center: campground.geometry.coordinates, 
 	zoom: 8,
 });
+map.addControl(new mapboxgl.NavigationControl());
  new mapboxgl.Marker()
  .setLngLat(campground.geometry.coordinates)
  .addTo(map)
