@@ -19,7 +19,7 @@ const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 const userRoutes = require('./routes/users')
 const helmet=require('helmet')
-const dbUrl = 'mongodb://127.0.0.1:27017/yelp-camp' //process.env.DB_URL
+const dbUrl = process.env.DB_URL
 if (!campgroundSchema || !reviewSchema) {
     console.error("Schema objects are not properly initialized or imported.");
  
