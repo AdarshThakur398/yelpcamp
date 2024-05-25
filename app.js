@@ -2,7 +2,8 @@ if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
-console.log(process.env.SECRET)
+
+const MongoStore = require('connect-mongo');
 const express = require('express');
 const app = express();
 const ejsMate = require('ejs-mate');
@@ -18,6 +19,7 @@ const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 const userRoutes = require('./routes/users')
 const helmet=require('helmet')
+const dbUrl = 'mongodb://127.0.0.1:27017/yelp-camp' //process.env.DB_URL
 if (!campgroundSchema || !reviewSchema) {
     console.error("Schema objects are not properly initialized or imported.");
  
@@ -36,7 +38,21 @@ app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.use(mongoSanitize());
 app.use(helmet({contentSecurityPolicy:false}));
+
+
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'thisshouldbeabettersecret!'
+    }
+});
+store.on("error", function(e) {
+    console.log("session store error!")
+})
 const sessionConfig = {
+    store,
     name:"session",
     secret:"thisisasecretboi",
     resave:false,
@@ -62,10 +78,9 @@ app.use((req,res,next) => {
     next();
 })
 
-mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp');
+mongoose.connect(dbUrl);
+//'mongodb://127.0.0.1:27017/yelp-camp'
 const db = mongoose.connection;
-
-
 
 
 

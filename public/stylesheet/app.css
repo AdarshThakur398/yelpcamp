@@ -1,9 +1,38 @@
 #cluster-map {
-       width:100%;
-       height:60vh;
-}
-
-#map {
-      width:100%;
-      height:300px;
-}
+      width: 100%;
+      height: 70vh;
+  }
+  
+  #map {
+      
+     overflow:hidden;
+   
+     width:100%;
+      height: 50vh;
+      margin-bottom: 5px;
+  }
+  
+  .main__container {
+      width: 100%;
+      display: flex;
+      flex-direction: column; 
+      align-items: center;
+      justify-content: center;
+  }
+  
+  .container__1 {
+      width: 100%;
+  }
+  
+  .container {
+      width: 100%;
+      max-width: 1200px;
+  }
+  
+  @media only screen and (max-width: 768px) {
+      .previous_reviews {
+          width: 100%;
+          padding-left: 0;
+      }
+  }
+  
