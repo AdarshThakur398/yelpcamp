@@ -17,7 +17,8 @@
           </div>
         </div>
         <ul class="navbar-nav ms-auto">
-          <% if (!currentUser) { %>
+        <% if (!currentUser || currentUser === undefined) { %>
+
           <li class="nav-item">
             <a class="nav-link" href="/login">Login</a>
           </li>
